@@ -1,5 +1,10 @@
 const path = require("path");
-const { createOrUpdate, findCarts } = require("../service/carts.service");
+const {
+  createOrUpdate,
+  findCarts,
+  updateCart,
+  removeCarts,selectAllCarts
+} = require("../service/carts.service");
 class CartsController {
   async add(ctx) {
     const userId = ctx.state.user.id;
@@ -22,6 +27,38 @@ class CartsController {
     ctx.body = {
       code: "0",
       message: "ok",
+      result: res,
+    };
+  }
+  async update(ctx) {
+    const { id } = ctx.request.params;
+    const { number, selected } = ctx.request.body;
+    console.log(number, selected);
+    if (number === undefined && selected === undefined) {
+      return ctx.app.emit("error", "number和selectd都为空", ctx);
+    }
+    const res = await updateCart({ id, number, selected });
+    ctx.body = {
+      code: "0",
+      message: "ok",
+      result: res,
+    };
+  }
+  async remove(ctx) {
+    const { ids } = ctx.request.body;
+    const res = await removeCarts(ids);
+    ctx.body = {
+      code: "0",
+      message: "okok",
+      result: res,
+    };
+  }
+  async selectAll(ctx) {
+    const { id: user_id } = ctx.state.user;
+    const res = await selectAllCarts(user_id);
+    ctx.body = {
+      code: "0",
+      message: "okok",
       result: res,
     };
   }

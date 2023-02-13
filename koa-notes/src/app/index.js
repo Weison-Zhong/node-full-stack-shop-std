@@ -15,6 +15,7 @@ app.use(
       uploadDir: path.join(__dirname, "../upload"),
       keepExtensions: true, // 保留文件扩展名
     },
+    parsedMethods: ["POST", "PUT", "PATCH", "DELETE"], //这些会自动把前端data挂载到request.body中
   })
 );
 app.use(KoaStatic(path.join(__dirname, "../upload")));
