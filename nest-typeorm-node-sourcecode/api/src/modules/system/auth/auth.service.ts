@@ -30,10 +30,11 @@ export class AuthService {
   /* 判断用户账号密码是否正确 */
   async validateUser(username: string, password: string) {
     const user = await this.userService.findOneByUsername(username);
-    if (!user) throw new ApiException('用户名或密码错误');
-    const comparePassword = this.sharedService.md5(password + user.salt);
-    if (comparePassword !== user.password)
-      throw new ApiException('用户名或密码错误');
+    console.log({user});
+    // if (!user) throw new ApiException('用户名或密码错误');
+    // const comparePassword = this.sharedService.md5(password + user.salt);
+    // if (comparePassword !== user.password)
+    //   throw new ApiException('用户名或密码错误');
     return user;
   }
 
