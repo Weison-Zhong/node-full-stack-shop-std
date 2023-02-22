@@ -4,8 +4,13 @@ import { BaseEntity } from 'src/common/entities/base.entity';
 import {
     Column,
     Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Dept } from '../../dept/entities/dept.entity';
+import { Role } from '../../role/entities/role.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -145,4 +150,11 @@ export class User extends BaseEntity {
     @IsOptional()
     @IsString()
     loginDate?: Date;
+
+    @ManyToOne(() => Dept, (dept) => dept.users)
+    dept: Dept;
+
+    @ManyToMany(() => Role, (role) => role.users)
+    @JoinTable()
+    roles: Role[];
 }

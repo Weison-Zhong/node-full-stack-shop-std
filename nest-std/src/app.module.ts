@@ -5,13 +5,20 @@ import { UserModule } from './module/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/defineConfig';
 import { SharedModule } from './shared/shared.module';
+import { RoleModule } from './module/role/role.module';
+import { MenuModule } from './module/menu/menu.module';
+import { DeptModule } from './module/dept/dept.module';
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     load: [configuration],
   }),
     SharedModule,
-    UserModule],
+    UserModule,
+    RoleModule,
+    MenuModule,
+    DeptModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
