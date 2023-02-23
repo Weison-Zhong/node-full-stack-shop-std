@@ -11,6 +11,7 @@ import {
   TreeChildren,
   TreeParent,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../../role/entities/role.entity';
 import { User } from '../../user/entities/user.entity';
 
@@ -25,6 +26,7 @@ export class Dept extends BaseEntity {
   })
   @Type()
   @IsNumber()
+  @ApiProperty()
   deptId: number;
 
   /* 部门名称 */
@@ -35,6 +37,7 @@ export class Dept extends BaseEntity {
     length: 50,
   })
   @IsString()
+  @ApiProperty()
   deptName: string;
 
   /*显示顺序  */
@@ -44,6 +47,7 @@ export class Dept extends BaseEntity {
     default: 0,
   })
   @IsNumber()
+  @ApiProperty()
   orderNum: number;
 
   /* 负责人 */
@@ -55,6 +59,7 @@ export class Dept extends BaseEntity {
   })
   @IsOptional()
   @IsString()
+  @ApiProperty()
   leader?: string;
 
   /* 联系电话 */
@@ -66,6 +71,7 @@ export class Dept extends BaseEntity {
   })
   @IsOptional()
   @IsString()
+  @ApiProperty()
   phone?: string;
 
   /* 邮箱 */
@@ -77,6 +83,7 @@ export class Dept extends BaseEntity {
   })
   @IsOptional()
   @IsString()
+  @ApiProperty()
   email?: string;
 
   /* 部门状态 */
@@ -88,6 +95,7 @@ export class Dept extends BaseEntity {
     type: 'char',
   })
   @IsString()
+  @ApiProperty()
   status: string;
 
   @Column({

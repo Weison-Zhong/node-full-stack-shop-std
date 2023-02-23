@@ -1,12 +1,3 @@
-/*
- * @Author: Sheng.Jiang
- * @Date: 2021-12-08 18:06:20
- * @LastEditTime: 2022-10-27 22:53:37
- * @LastEditors: Please set LastEditors
- * @Description: 数据库基类
- * @FilePath: /meimei-admin/src/common/entities/base.entity.ts
- * You can you up，no can no bb！！
- */
 import { IsOptional, IsString } from 'class-validator';
 import {
     Column,
@@ -14,7 +5,7 @@ import {
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
-
+import { ApiProperty } from '@nestjs/swagger';
 export class BaseEntity {
     /* 创建时间 */
     @CreateDateColumn({ name: 'create_time', comment: '创建时间' })
@@ -36,6 +27,7 @@ export class BaseEntity {
     @Column({ name: 'remark', comment: '备注', default: '' })
     @IsOptional()
     @IsString()
+    @ApiProperty()
     remark?: string;
 
     /* 版本号（首次插入或更新时会自增） */
