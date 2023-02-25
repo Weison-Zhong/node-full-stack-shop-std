@@ -1,7 +1,7 @@
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from 'class-transformer';
 import { Dept } from "../entities/dept.entity";
-import { ApiProperty } from "@nestjs/swagger";
+import { OmitType } from "@nestjs/swagger";
 
 export class ReqDeptListDto {
     /* 部门名称 */
@@ -15,7 +15,7 @@ export class ReqDeptListDto {
     status?: string;
 }
 
-export class ReqAddDeptDto extends Dept {
+export class ReqAddDeptDto extends OmitType(Dept, ['deptId'] as const) {
     /* 父部门Id */
     @Type()
     @IsNumber()
