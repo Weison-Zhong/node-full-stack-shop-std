@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { ApiException } from 'src/common/exceptions/api.exception';
+import { ReqAddUserDto, ReqUpdateUserDto } from './dto/req-user.dto';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
+  // 新增用户
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async add(@Body() reqAddUserDto: ReqAddUserDto) {
+    const user = await this.userService.findOneByUserNameState(reqAddUserDto.userName)
+    if (user) throw new ApiException('该用户名已存在')
+    await this.userService.addUser(reqAddUserDto)
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  /* 删除用户 */
+  @Delete(':userIds')
+  async delete(
+    @Param('userIds') userIds: string,
+  ) {
+    const userIdArr = userIds.split(',');
+    await this.userService.delete(userIdArr);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  /* 编辑用户 */
+  @Put()
+  async update(
+    @Body() reqUpdateUserDto: ReqUpdateUserDto,
+  ) {
+    const user = await this.userService.findOneByUserNameState(
+      reqUpdateUserDto.userName,
+    );
+    if (user) {
+      await this.userService.updateUser(reqUpdateUserDto);
+    } else {
+      throw new ApiException('该用户不存在');
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiHideProperty } from '@nestjs/swagger';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import {
   Column,
@@ -156,12 +157,15 @@ export class Menu extends BaseEntity {
   @IsString()
   icon?: string;
 
+  @ApiHideProperty()
   @TreeChildren()
   children: Menu[];
 
+  @ApiHideProperty()
   @TreeParent()
   parent: Menu;
 
+  @ApiHideProperty()
   @ManyToMany(() => Role, (role) => role.menus)
   roles: Role[];
 }

@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { BaseEntity } from 'src/common/entities/base.entity';
@@ -100,16 +101,20 @@ export class Role extends BaseEntity {
     type: 'char',
     default: '0',
   })
+  @ApiHideProperty()
   delFlag: string;
 
+  @ApiHideProperty()
   @ManyToMany(() => Dept, (dept) => dept.roles)
   @JoinTable()
   depts: Dept[];
 
+  @ApiHideProperty()
   @ManyToMany(() => Menu, (menu) => menu.roles)
   @JoinTable()
   menus: Menu[];
 
+  @ApiHideProperty()
   @ManyToMany(() => User, (user) => user.roles)
   users: User[];
 }

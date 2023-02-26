@@ -38,7 +38,7 @@ export class DeptService {
 
     /* 查询部门列表 */
     async list(reqDeptListDto: ReqDeptListDto) {
-        console.log({reqDeptListDto});
+        console.log({ reqDeptListDto });
         const where: FindOptionsWhere<Dept> = { delFlag: '0' };
         if (reqDeptListDto.deptName) {
             where.deptName = Like(`%${reqDeptListDto.deptName}%`);
@@ -58,5 +58,11 @@ export class DeptService {
             .orderBy('dept.orderNum', 'ASC')
             .addOrderBy('dept.createTime', 'ASC')
             .getRawMany();
+    }
+
+
+    /* 通过id查询 */
+    async findById(deptId: number) {
+        return this.deptRepository.findOneBy({ deptId });
     }
 }

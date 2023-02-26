@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiHideProperty } from '@nestjs/swagger';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import {
     Column,
@@ -102,6 +103,7 @@ export class User extends BaseEntity {
     @IsString()
     password: string;
 
+    @ApiHideProperty()
     @Column({
         comment: '盐加密',
         length: 100,
@@ -121,6 +123,7 @@ export class User extends BaseEntity {
     @IsString()
     status: string;
 
+    @ApiHideProperty()
     @Column({
         name: 'del_flag',
         comment: '删除标志（0代表存在 2代表删除）',
@@ -151,9 +154,11 @@ export class User extends BaseEntity {
     @IsString()
     loginDate?: Date;
 
+    @ApiHideProperty()
     @ManyToOne(() => Dept, (dept) => dept.users)
     dept: Dept;
 
+    @ApiHideProperty()
     @ManyToMany(() => Role, (role) => role.users)
     @JoinTable()
     roles: Role[];

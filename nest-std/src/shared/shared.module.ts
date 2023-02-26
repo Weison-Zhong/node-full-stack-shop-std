@@ -1,6 +1,8 @@
 import { Global, Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { RedisModule } from '@nestjs-modules/ioredis';
 import { ConfigService } from '@nestjs/config';
+import { SharedService } from "./shared.service";
 @Global()
 @Module({
   imports: [
@@ -18,7 +20,17 @@ import { ConfigService } from '@nestjs/config';
         logging: configService.get('database.logging'),
       }),
       inject: [ConfigService],
-    })
-  ]
+    }),
+    /* 连接redis */
+    RedisModule.forRootAsync({
+      useFactory: (configService: ConfigService) =>
+        configService.get<any>('redis'),
+      inject: [ConfigService],
+    }),
+  ],
+  providers: [
+    SharedService,
+  ],
+  exports: [SharedService],
 })
 export class SharedModule { }
