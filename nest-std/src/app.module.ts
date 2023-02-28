@@ -8,12 +8,14 @@ import { SharedModule } from './shared/shared.module';
 import { RoleModule } from './module/role/role.module';
 import { MenuModule } from './module/menu/menu.module';
 import { DeptModule } from './module/dept/dept.module';
+import { LoginModule } from './module/login/login.module';
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     load: [configuration],
   }),
     SharedModule,
+    LoginModule,
     UserModule,
     RoleModule,
     MenuModule,

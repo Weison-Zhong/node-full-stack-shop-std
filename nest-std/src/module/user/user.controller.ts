@@ -1,11 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, forwardRef, Inject } from '@nestjs/common';
 import { ApiException } from 'src/common/exceptions/api.exception';
+import { ReqRoleListDto } from '../role/dto/req-role.dto';
+import { RoleService } from '../role/role.service';
 import { ReqAddUserDto, ReqUpdateUserDto } from './dto/req-user.dto';
+import { ResUserInfoDto, ResUserDto } from './dto/res-user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService,
+    @Inject(forwardRef(() => RoleService))
+    private readonly roleService: RoleService,
+  ) { }
 
   // 新增用户
   @Post()
@@ -37,5 +43,20 @@ export class UserController {
     } else {
       throw new ApiException('该用户不存在');
     }
+  }
+
+  /* 通过id查询用户信息 */
+  @Get(':userId')
+  async one(@Param('userId') userId: number): Promise<ResUserInfoDto> {
+    const roles = await this.roleService.list(new ReqRoleListDto());
+    const user = (await this.userService.userAllInfo(userId)) as ResUserDto;
+    user.deptId = user.dept ? user.dept.deptId : null;
+    const roleIds = user.roles.map((item) => item.roleId);
+    user.roleIds = [];
+    return {
+      data: user,
+      roleIds,
+      roles: roles.rows,
+    };
   }
 }

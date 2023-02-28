@@ -74,4 +74,32 @@ export class UserService {
       await this.redis.set(`${USER_VERSION_KEY}:${reqUpdateUserDto.userId}`, 2); //调整密码版本，强制用户重新登录
     }
   }
+  //通过id 查找用户的所有信息
+  async userAllInfo(userId: number): Promise<User> {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.dept', 'dept', 'dept.delFlag = 0')
+      .leftJoinAndSelect('user.roles', 'role', 'role.delFlag = 0')
+      .where('user.userId = :userId', { userId })
+      .getOne();
+  }
+
+  /* 通过用户名获取用户,排除停用和删除的,用于登录 */
+  async findOneByUsername(username: string) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select('user.userId')
+      .addSelect('user.userName')
+      .addSelect('user.password')
+      .addSelect('user.salt')
+      .addSelect('user.dept')
+      .leftJoinAndSelect('user.dept', 'dept')
+      .where({
+        userName: username,
+        delFlag: '0',
+        status: '0',
+      })
+      .getOne();
+    return user;
+  }
 }
