@@ -71,6 +71,7 @@ export class RoleController {
   @RequiresPermissions('system:role:query')
   @ApiPaginatedResponse(Role)
   async list(@Query(PaginationPipe) reqRoleListDto: ReqRoleListDto) {
+    console.log('先？？？');
     return this.roleService.list(reqRoleListDto);
   }
 

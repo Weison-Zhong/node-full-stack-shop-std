@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, forwardRef, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, forwardRef, Inject, Query } from '@nestjs/common';
 import { ApiException } from 'src/common/exceptions/api.exception';
+import { PaginationPipe } from 'src/common/pipes/pagination.pipe';
 import { ReqRoleListDto } from '../role/dto/req-role.dto';
 import { RoleService } from '../role/role.service';
-import { ReqAddUserDto, ReqUpdateUserDto } from './dto/req-user.dto';
+import { ReqAddUserDto, ReqUpdateUserDto, ReqUserListDto } from './dto/req-user.dto';
 import { ResUserInfoDto, ResUserDto } from './dto/res-user.dto';
 import { UserService } from './user.service';
 
@@ -12,6 +13,15 @@ export class UserController {
     @Inject(forwardRef(() => RoleService))
     private readonly roleService: RoleService,
   ) { }
+
+  /* 分页查询用户列表 */
+  @Get('list')
+  async list(
+    @Query(PaginationPipe) reqUserListDto: ReqUserListDto,
+  ) {
+    return this.userService.list(reqUserListDto, null, null);
+  }
+
 
   // 新增用户
   @Post()

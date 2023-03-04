@@ -32,4 +32,17 @@ export class LoginService {
         );
         return { token: jwtSign };
     }
+
+    /* 退出登录 */
+    async logout(token: string) {
+        try {
+            const payload = this.jwtService.verify(token);
+            console.log({ token }, { payload });
+            if (await this.redis.get(`${USER_TOKEN_KEY}:${payload.userId}`)) {
+                await this.redis.del(`${USER_TOKEN_KEY}:${payload.userId}`);
+            }
+        } catch (error) {
+            console.log({ error });
+        }
+    }
 }

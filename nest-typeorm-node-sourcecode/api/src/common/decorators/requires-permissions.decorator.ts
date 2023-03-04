@@ -24,6 +24,7 @@ export const RequiresPermissions = (
   permissions: string | string[],
   logical: LogicalEnum = LogicalEnum.or,
 ) => {
+  console.log('??????_____');
   let permissionObj: PermissionObj = {
     permissionArr: [],
     logical,
@@ -39,5 +40,6 @@ export const RequiresPermissions = (
       logical,
     };
   }
+  console.log('装饰器‘没', permissionObj);
   return SetMetadata(PERMISSION_KEY_METADATA, permissionObj);
 };

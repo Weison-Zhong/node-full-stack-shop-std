@@ -28,6 +28,7 @@ export class PermissionAuthGuard implements CanActivate {
       PERMISSION_KEY_METADATA,
       [context.getHandler(), context.getClass()],
     );
+    console.log({permissionObj});
     if (!permissionObj || !permissionObj.permissionArr.length) return true;
     const request = context.switchToHttp().getRequest();
     const userId = request.user?.userId;
